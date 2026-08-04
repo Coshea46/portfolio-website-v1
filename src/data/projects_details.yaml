@@ -1,0 +1,49 @@
+projects:
+  - name: "Judo Clipper"
+    slug: "judo-clipper"
+    tagline: "AI-powered system using YOLO pose detection as input to a custom-built LSTM model, automatically extracting every throw-attempt clip from a full judo match."
+    icon: "/images/judo_clipper_project_icon.png"
+    tech: ["PyTorch", "Python", "JavaScript", "Ultralytics YOLO v11", "Vercel"]
+    links:
+      - label: "System repo"
+        url: "https://github.com/Coshea46/ai-judo-coach-system"
+        type: "github"
+        primary: true
+      - label: "Research repo"
+        url: "https://github.com/Coshea46/ai-judo-coach-research-clean"
+        type: "github"
+      - label: "Write-up"
+        url: "/blog/judo-clipper"
+        type: "blog"
+
+  - name: "Email Anonymization Tool"
+    slug: "email-anonymization-tool"
+    tagline: "A pipeline for anonymizing email corpora — protecting the privacy of victims within open-source email datasets so they can be used safely for research."
+    icon: "/images/email_anonymization_project_icon.png"
+    tech: ["Python", "Presidio"]
+    links:
+      - label: "Pipeline repo"
+        url: "https://github.com/Coshea46/presidio-based-email-redaction-pipeline"
+        type: "github"
+        primary: true
+      - label: "Write-up"
+        url: "/blog/email-anonymization-tool"
+        type: "blog"
+
+  - name: "EdinburghAI Workshops"
+    slug: "edinburgh-ai-workshops"
+    tagline: "Self-authored resources for AI-focused workshops delivered to students at the University of Edinburgh's student-led AI Society."
+    icon: "/images/edinburgh_ai_project_icon.jpeg"
+    tech: ["Python", "PyTorch", "Kaggle"]
+    concepts: ["YOLO Pose Detection", "Data Preprocessing", "LSTM", "Recurrent Neural Networks"]
+    links:
+      - label: "Resources repo"
+        url: "https://github.com/Coshea46/Edinburgh-AI-workshop-resources"
+        type: "github"
+        primary: true
+      - label: "Society contributions"
+        url: "https://github.com/EdinburghAI/workshops/commits/main/?author=Coshea46"
+        type: "commits"
+      - label: "Write-up"
+        url: "/blog/edinburgh-ai-workshops"
+        type: "blog"

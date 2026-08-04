@@ -1,0 +1,46 @@
+name: "Conor O'Shea"
+role: "AI and Cybersecurity Researcher"
+availability: "Open to ML / Applied AI Engineering roles"
+lead: >-
+  3rd-year Artificial Intelligence & Computer Science undergraduate at the
+  University of Edinburgh. I design, train and ship ML systems — from pose-driven
+  video analysis to privacy-preserving data pipelines — and I recently finished an
+  AI & Cybersecurity research internship.
+
+email: "osheaconboy@gmail.com"
+linkedin: "https://www.linkedin.com/in/conor-o-shea-056a02328/"
+github: "https://github.com/Coshea46"
+resume: "/resumes/placeholder_cv.pdf"
+
+stats:
+  - num: "3"
+    label: "featured projects"
+  - num: "1"
+    label: "paper → ACM '26"
+  - num: "AI+Sec"
+    label: "research intern"
+
+research:
+  label: "Paper · Submitted to ACM 2026"
+  title: "An Analysis of Factors Affecting LLM-based Phishing Detection"
+  summary: >-
+    As a contributor to this research, I reviewed 655 emails to produce a
+    dataset of 160 emails for the paper:
+    - 80 of which where Phishing emails
+    - 80 were benign emails
+
+    Each email was classified as one of 3 types of obfuscation technique:
+    - Insert Word
+    - Distrupt Word
+    - Add Paragraph
+
+    To make labelling faster I made a custom labelling app using a streamlit UI.
+    This increased labelling speed per email by ~4x as it saved time on opening
+    and closing files.
+  meta:
+    - label: "Role"
+      value: "Contributor"
+    - label: "Focus"
+      value: "LLM security · Phishing detection"
+    - label: "Venue"
+      value: "ACM 2026 (submitted)"

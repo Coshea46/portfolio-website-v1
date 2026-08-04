@@ -1,0 +1,18 @@
+---
+import profile from '../data/profiles.yaml';
+---
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo"><span class="dot"></span>{profile.name}</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="/#about">About</a>
+      <a href="/#research">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#contact">Contact</a>
+      <a href={profile.resume} target="_blank" rel="noopener" class="nav-cta">Résumé</a>
+    </div>
+  </div>
+</nav>

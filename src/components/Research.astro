@@ -1,0 +1,26 @@
+---
+import profile from '../data/profiles.yaml';
+const { research } = profile;
+---
+<section id="research">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-tag">02 / research</span>
+      <h2>AI &amp; Cybersecurity Internship</h2>
+      <p>Recently completed research examining how robust modern language models are when facing deliberately obfuscated malicious content.</p>
+    </div>
+    <div class="paper-card reveal">
+      <span class="paper-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        {research.label}
+      </span>
+      <h3>{research.title}</h3>
+      <p>{research.summary}</p>
+      <div class="paper-meta">
+        {research.meta.map((m: any) => (
+          <span><b>{m.label}:</b>&nbsp;{m.value}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

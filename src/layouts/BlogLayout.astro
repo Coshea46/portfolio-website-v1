@@ -1,0 +1,37 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const { frontmatter } = Astro.props;
+const dateStr = frontmatter.date
+  ? new Date(frontmatter.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long' })
+  : null;
+---
+<BaseLayout title={`${frontmatter.title} · Conor O'Shea`} description={frontmatter.description}>
+  <article class="article">
+    <div class="wrap narrow">
+      <a class="back" href="/#projects">&larr; Back to projects</a>
+
+      <div class="article-head">
+        {frontmatter.icon && <img class="article-icon" src={frontmatter.icon} alt="" />}
+        <div>
+          <h1>{frontmatter.title}</h1>
+          {dateStr && <p class="article-date">{dateStr}</p>}
+        </div>
+      </div>
+
+      {frontmatter.tech && (
+        <div class="chips article-tech">
+          {frontmatter.tech.map((t: string) => <span class="chip">{t}</span>)}
+        </div>
+      )}
+
+      {frontmatter.description && <p class="article-desc">{frontmatter.description}</p>}
+
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+  <Footer />
+</BaseLayout>
