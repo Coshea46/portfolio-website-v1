@@ -18,7 +18,7 @@ projects:
 
   - name: "Email Anonymization Tool"
     slug: "email-anonymization-tool"
-    tagline: "A pipeline for anonymizing email corpora — protecting the privacy of victims within open-source email datasets so they can be used safely for research."
+    tagline: "A pipeline for anonymizing email corpora for the purpose of protecting the privacy of victims within open-source email datasets, so they can be used safely for research."
     icon: "/images/email_anonymization_project_icon.png"
     tech: ["Python", "Presidio"]
     links:

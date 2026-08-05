@@ -1,11 +1,11 @@
 name: "Conor O'Shea"
 role: "AI and Cybersecurity Researcher"
 availability: "Open to ML / Applied AI Engineering roles"
-lead: >-
-  3rd-year Artificial Intelligence & Computer Science undergraduate at the
-  University of Edinburgh. I design, train and ship ML systems — from pose-driven
-  video analysis to privacy-preserving data pipelines — and I recently finished an
-  AI & Cybersecurity research internship.
+lead:
+  - "3rd-year Artificial Intelligence & Computer Science undergraduate at the University of Edinburgh, building ML systems that work on real data and solve real problems."
+  - "I specialise in converting complex, real-world data streams into clean, structured data through the development of modular pipelines."
+  - "My work ranges from video-analysis systems for judo, to anonymization tools for email corpora."
+  - "I recently completed an AI & Cybersecurity research internship at the University of Edinburgh's School of Informatics."
 
 email: "osheaconboy@gmail.com"
 linkedin: "https://www.linkedin.com/in/conor-o-shea-056a02328/"
@@ -24,19 +24,13 @@ research:
   label: "Paper · Submitted to ACM 2026"
   title: "An Analysis of Factors Affecting LLM-based Phishing Detection"
   summary: >-
-    As a contributor to this research, I reviewed 655 emails to produce a
-    dataset of 160 emails for the paper:
-    - 80 of which where Phishing emails
-    - 80 were benign emails
-
-    Each email was classified as one of 3 types of obfuscation technique:
-    - Insert Word
-    - Distrupt Word
-    - Add Paragraph
-
-    To make labelling faster I made a custom labelling app using a streamlit UI.
-    This increased labelling speed per email by ~4x as it saved time on opening
-    and closing files.
+    As a contributor to this research, I manually reviewed 655 emails to curate a
+    balanced 160-email dataset for the study, 80 using HTML/CSS obfuscation
+    techniques and 80 without.
+  contributions:
+    - "Curated a balanced 160-email evaluation dataset (80 obfuscated / 80 clean) from a manual review of 655 emails."
+    - "Built a Streamlit labelling interface that cut per-email labelling time by ~4×."
+    - "Reviewed and gave feedback on the final paper write-up."
   meta:
     - label: "Role"
       value: "Contributor"
@@ -44,3 +38,4 @@ research:
       value: "LLM security · Phishing detection"
     - label: "Venue"
       value: "ACM 2026 (submitted)"
+

@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
 
 const posts = (await getCollection('blog'))
-  .filter((post) => !post.id.includes('/'))   // hide nested subpages
+  .filter((post) => !post.id.includes('/'))
   .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
 ---
 <BaseLayout title="Writing · Conor O'Shea">
@@ -16,15 +16,18 @@ const posts = (await getCollection('blog'))
       </div>
       <div class="projects">
         {posts.map((post) => (
-          <a class="project" href={`/blog/${post.id}`}>
-            {post.data.icon && (
-              <div class="project-icon"><img src={post.data.icon} alt="" loading="lazy" /></div>
-            )}
+          <article class="project">
+            <div class="project-banner contain">
+              {post.data.icon && <img src={post.data.icon} alt="" loading="lazy" />}
+            </div>
             <div class="project-body">
               <h3>{post.data.title}</h3>
               {post.data.description && <p class="tagline">{post.data.description}</p>}
+              <div class="project-links">
+                <a class="plink primary" href={`/blog/${post.id}`}>Read write-up</a>
+              </div>
             </div>
-          </a>
+          </article>
         ))}
       </div>
     </div>

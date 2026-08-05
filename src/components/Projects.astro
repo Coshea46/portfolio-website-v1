@@ -16,46 +16,72 @@ const isExternal = (url: string) => url.startsWith('http');
     <div class="sec-head reveal">
       <span class="sec-tag">03 / projects</span>
       <h2>Selected work</h2>
-      <p>End-to-end builds — from model research to deployed applications and teaching resources.</p>
+      <p>End-to-end builds, from model research to deployed applications and teaching resources.</p>
     </div>
 
     <div class="projects">
-      {projects.map((p: any) => (
-        <article class="project reveal">
-          <div class="project-icon"><img src={p.icon} alt={`${p.name} icon`} loading="lazy" /></div>
-          <div class="project-body">
-            <h3>{p.name}</h3>
-            <p class="tagline">{p.tagline}</p>
+      {projects.map((p: any) => {
+        const primary = p.links.find((l: any) => l.primary) ?? p.links[0];
+        const rest = p.links.filter((l: any) => l !== primary);
+        return (
+          <article class="project reveal">
+            <div class="project-banner cover">
+              <img src={p.banner ?? p.icon} alt={`${p.name} preview`} loading="lazy" />
 
-            <div class="project-tech chips">
-              {p.tech.map((t: string) => <span class="chip">{t}</span>)}
+              <span class="project-badge">Featured work</span>
+              {p.live && <span class="project-live"><span class="dot-live"></span>Live</span>}
             </div>
 
-            <div class="project-links">
-              {p.links.map((l: any) => (
-                <a
-                  class:list={['plink', { primary: l.primary }]}
-                  href={l.url}
-                  target={isExternal(l.url) ? '_blank' : undefined}
-                  rel={isExternal(l.url) ? 'noopener' : undefined}
-                >
-                  <Fragment set:html={iconFor(l.type)} />
-                  {l.label}
-                </a>
-              ))}
-            </div>
+            <div class="project-body">
+              <h3>{p.name}</h3>
 
-            {p.concepts && (
-              <div class="concepts">
-                <div class="g-lbl">concepts taught</div>
-                <div class="chips">
-                  {p.concepts.map((c: string) => <span class="chip">{c}</span>)}
-                </div>
+              <div class="project-tech">
+                {p.tech.map((t: string) => <span class="chip">{t}</span>)}
               </div>
-            )}
-          </div>
-        </article>
-      ))}
+
+              <p class="tagline">{p.tagline}</p>
+
+              {p.concepts && (
+                <div class="concepts">
+                  <div class="g-lbl">concepts taught</div>
+                  <div class="chips">
+                    {p.concepts.map((c: string) => <span class="chip">{c}</span>)}
+                  </div>
+                </div>
+              )}
+
+              <div class="project-links">
+                {primary && (
+                  <a
+                    class="plink primary"
+                    href={primary.url}
+                    target={isExternal(primary.url) ? '_blank' : undefined}
+                    rel={isExternal(primary.url) ? 'noopener' : undefined}
+                  >
+                    <Fragment set:html={iconFor(primary.type)} />
+                    {primary.label}
+                  </a>
+                )}
+                {rest.length > 0 && (
+                  <div class="project-links-row">
+                    {rest.map((l: any) => (
+                      <a
+                        class="plink"
+                        href={l.url}
+                        target={isExternal(l.url) ? '_blank' : undefined}
+                        rel={isExternal(l.url) ? 'noopener' : undefined}
+                      >
+                        <Fragment set:html={iconFor(l.type)} />
+                        {l.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>

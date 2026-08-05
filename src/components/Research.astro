@@ -16,6 +16,12 @@ const { research } = profile;
       </span>
       <h3>{research.title}</h3>
       <p>{research.summary}</p>
+      {research.contributions && (
+        <ul class="paper-contribs">
+          {research.contributions.map((c: string) => <li>{c}</li>)}
+        </ul>
+      )}
+
       <div class="paper-meta">
         {research.meta.map((m: any) => (
           <span><b>{m.label}:</b>&nbsp;{m.value}</span>
