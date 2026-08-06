@@ -1,10 +1,10 @@
 name: "Conor O'Shea"
-role: "AI and Cybersecurity Researcher"
+role: "ML Engineer · AI Security Research"
 availability: "Open to ML / Applied AI Engineering roles"
 lead:
   - "3rd-year Artificial Intelligence & Computer Science undergraduate at the University of Edinburgh, building ML systems that work on real data and solve real problems."
   - "I specialise in converting complex, real-world data streams into clean, structured data through the development of modular pipelines."
-  - "My work ranges from video-analysis systems for judo, to anonymization tools for email corpora."
+  - "My work ranges from video-analysis systems for judo to anonymisation tools for email corpora."
   - "I recently completed an AI & Cybersecurity research internship at the University of Edinburgh's School of Informatics."
 
 email: "osheaconboy@gmail.com"
@@ -12,30 +12,20 @@ linkedin: "https://www.linkedin.com/in/conor-o-shea-056a02328/"
 github: "https://github.com/Coshea46"
 resume: "/resumes/placeholder_cv.pdf"
 
-stats:
-  - num: "3"
-    label: "featured projects"
-  - num: "1"
-    label: "paper → ACM '26"
-  - num: "AI+Sec"
-    label: "research intern"
+hero_summary: "2 public projects · AI security research experience · University of Edinburgh"
+
 
 research:
-  label: "Paper · Submitted to ACM 2026"
-  title: "An Analysis of Factors Affecting LLM-based Phishing Detection"
-  summary: >-
-    As a contributor to this research, I manually reviewed 655 emails to curate a
-    balanced 160-email dataset for the study, 80 using HTML/CSS obfuscation
-    techniques and 80 without.
+  label: "Research Internship · Completed"
+  title: "Research Contributions"
+  summary: "Contributed to two projects during an AI & Cybersecurity research internship."
   contributions:
-    - "Curated a balanced 160-email evaluation dataset (80 obfuscated / 80 clean) from a manual review of 655 emails."
-    - "Built a Streamlit labelling interface that cut per-email labelling time by ~4×."
-    - "Reviewed and gave feedback on the final paper write-up."
+    - "Designed and implemented an automated system for anonymising email corpora."
+    - "Sourced and curated a research dataset, building a labelling interface that made annotation approximately 4× faster."
+  note: "Source code for the anonymisation system is currently private."
   meta:
     - label: "Role"
-      value: "Contributor"
-    - label: "Focus"
-      value: "LLM security · Phishing detection"
-    - label: "Venue"
-      value: "ACM 2026 (submitted)"
+      value: "Research Intern"
+    - label: "Institution"
+      value: "University of Edinburgh"
 

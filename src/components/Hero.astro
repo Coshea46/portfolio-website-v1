@@ -4,7 +4,12 @@ import profile from '../data/profiles.yaml';
 <header class="hero" id="top">
   <div class="wrap">
     <span class="badge"><span class="pulse"></span>{profile.availability}</span>
-    <h1>Building intelligent systems<br />at the intersection of<br /><span class="grad">AI &amp; security.</span></h1>
+    <h1>
+      Building end-to-end<br />
+      AI systems for<br />
+      <span class="grad">real-world problems.</span>
+    </h1>
+
     <p class="role">// {profile.role}</p>
     <div class="lead">
         {profile.lead.map((para: string) => <p>{para}</p>)}
@@ -15,10 +20,8 @@ import profile from '../data/profiles.yaml';
       </a>
       <a href="#contact" class="btn btn-ghost">Get in touch</a>
     </div>
-    <div class="hero-stats">
-      {profile.stats.map((s: any) => (
-        <div class="stat"><div class="num">{s.num}</div><div class="lbl">{s.label}</div></div>
-      ))}
+    <div class="hero-summary">
+      {profile.hero_summary}
     </div>
-  </div>
+
 </header>
