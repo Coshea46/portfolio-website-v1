@@ -6,14 +6,19 @@ projects:
     tech:
       - "PyTorch"
       - "Python"
-      - "JavaScript"
       - "Ultralytics YOLO v11"
+      - "AWS S3"
+      - "FastAPI"
+      - "Modal"
       - "Vercel"
     links:
+      - label: "Visit website"
+        url: "https://www.judoclipper.com/"
+        type: "webapp"
+        primary: true
       - label: "System repo"
         url: "https://github.com/Coshea46/ai-judo-coach-system"
         type: "github"
-        primary: true
       - label: "Research repo"
         url: "https://github.com/Coshea46/ai-judo-coach-research-clean"
         type: "github"
