@@ -34,4 +34,30 @@ const dateStr = frontmatter.date
     </div>
   </article>
   <Footer />
+  <script>
+    import mermaid from 'mermaid';
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      securityLevel: 'strict',
+      themeVariables: {
+        background: '#111420',
+        primaryColor: '#111420',
+        primaryTextColor: '#e6e9f0',
+        primaryBorderColor: '#4fd1c5',
+        lineColor: '#4fd1c5',
+        secondaryColor: '#0e1017',
+        tertiaryColor: '#0e1017',
+      },
+    });
+
+    mermaid
+      .run({
+        querySelector: '.mermaid',
+      })
+      .catch((error) => {
+        console.error('Mermaid diagram failed to render:', error);
+      });
+  </script>
 </BaseLayout>

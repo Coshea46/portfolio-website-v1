@@ -10,6 +10,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.2.0",
     "@modyfi/vite-plugin-yaml": "^1.1.0",
-    "astro": "^5.5.0"
+    "astro": "^5.5.0",
+    "mermaid": "^11.17.2"
   }
 }
