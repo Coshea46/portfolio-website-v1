@@ -1,9 +1,96 @@
 ---
 title: "EdinburghAI Workshops"
-description: "Self-authored resources for AI-focused workshops delivered to students at the University of Edinburgh's student-led AI Society."
-date: 2025-02-01
+description: "A series of hands-on machine learning workshops designed and delivered for EdinburghAI, the University of Edinburgh's student-led AI society."
+date: 2026-09-01
 icon: "/images/edinburgh_ai_project_icon.jpeg"
-tech: ["Python", "PyTorch", "Kaggle"]
+tech:
+  - "Python"
+  - "PyTorch"
+  - "Kaggle"
+  - "YOLO"
+  - "RNNs"
+  - "LSTMs"
 ---
 
-Your workshops write-up goes here.
+A series of hands-on workshops I designed for EdinburghAI, the University of
+Edinburgh's student-led AI society. Two workshops have been delivered so far,
+with a third planned for September 2026.
+
+Each session opens with a 15-minute lecture and slides covering the theory,
+followed by a hands-on Kaggle notebook where attendees work through the core
+deep learning logic themselves. A provided API handles the boilerplate so that
+the focus remains on the concepts that matter.
+
+The series maps directly onto the technical stack behind
+[Judo Clipper](/blog/judo-clipper) and was partly motivated by wanting to share
+what I learned while building it.
+
+---
+
+## Workshop 1: Single Object Detection with YOLO
+
+[View the workshop resources](https://github.com/Coshea46/Edinburgh-AI-workshop-resources/tree/master/yolo-racoon-workshop)
+
+Attendees built a single-object YOLO detector in PyTorch from scratch, training
+it to locate raccoons in images.
+
+The session covered:
+
+- Converting images into tensors
+- Normalising bounding-box coordinates
+- Implementing confidence and coordinate loss
+- Evaluating predictions using Intersection over Union
+- Drawing predicted bounding boxes on held-out images
+
+Attendees finished the workshop with a trained model capable of locating
+raccoons in unseen images.
+
+---
+
+## Workshop 2: LSTMs, RNNs and Sequence Modelling
+
+[View the workshop resources](https://github.com/Coshea46/Edinburgh-AI-workshop-resources/tree/master/rnn-lstm-workshop)
+
+Building on the concepts introduced in Workshop 1, this session explored
+recurrent architectures for time-series data using an earlier version of the
+Judo Clipper pose dataset.
+
+Attendees implemented both an RNN and an LSTM in PyTorch and trained them side
+by side. This allowed them to observe the RNN's gradient explosion and compare
+it with the more stable convergence of the LSTM.
+
+The session covered:
+
+- Representing pose data as temporal sequences
+- Implementing RNNs and LSTMs in PyTorch
+- Understanding exploding gradients
+- Using masked loss functions for missing pose detections
+- Applying class-imbalance weighting
+- Evaluating classification models using F1 score
+
+---
+
+## Workshop 3: Content Recommendation Algorithms
+
+*Planned for September 2026.*
+
+This upcoming session will explore the algorithmic foundations of short-form
+content recommendation.
+
+Planned topics include:
+
+- Collaborative filtering
+- Content-based recommendation
+- User and content representations
+- Ranking candidate content
+- Balancing relevance, novelty and diversity
+- How short-form platforms surface content at scale
+
+---
+
+## Resources
+
+All workshop materials are available through the following repositories:
+
+- [My EdinburghAI workshop resources](https://github.com/Coshea46/Edinburgh-AI-workshop-resources)
+- [EdinburghAI workshops repository](https://github.com/EdinburghAI/workshops)
