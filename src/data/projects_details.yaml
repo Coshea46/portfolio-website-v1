@@ -39,6 +39,7 @@ projects:
       - "Data Preprocessing"
       - "LSTM"
       - "Recurrent Neural Networks"
+      - "Transformers"
     links:
       - label: "Resources repo"
         url: "https://github.com/Coshea46/Edinburgh-AI-workshop-resources"
