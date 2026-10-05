@@ -10,20 +10,22 @@ tech:
   - "YOLO"
   - "RNNs"
   - "LSTMs"
+  - "Transformers"
+  - "HSTU"
 ---
 
-A series of hands-on workshops I designed for EdinburghAI, the University of
-Edinburgh's student-led AI society. Two workshops have been delivered so far,
-with a third planned for September 2026.
+A series of hands-on workshops I designed and delivered for EdinburghAI, the
+University of Edinburgh's student-led AI society. Three workshops have been
+delivered so far.
 
 Each session opens with a 15-minute lecture and slides covering the theory,
 followed by a hands-on Kaggle notebook where attendees work through the core
 deep learning logic themselves. A provided API handles the boilerplate so that
 the focus remains on the concepts that matter.
 
-The series maps directly onto the technical stack behind
-[Judo Clipper](/blog/judo-clipper) and was partly motivated by wanting to share
-what I learned while building it.
+The first two workshops map directly onto the technical stack behind
+[Judo Clipper](/blog/judo-clipper) and were partly motivated by wanting to
+share what I learned while building it.
 
 ---
 
@@ -70,21 +72,44 @@ The session covered:
 
 ---
 
-## Workshop 3: Content Recommendation Algorithms
+## Workshop 3: Short-Form Content Recommendation Algorithms
 
-*Planned for September 2026.*
+[View the workshop resources](https://github.com/Coshea46/Edinburgh-AI-workshop-resources/tree/master/ai-for-short-form-content-recommendation-workshop)
 
-This upcoming session will explore the algorithmic foundations of short-form
-content recommendation.
+Delivered on 18 September 2026. The workshop explored how platforms like
+Instagram Reels decide what to show you, using Meta's Hierarchical Sequential
+Transduction Unit (HSTU) as the core example.
 
-Planned topics include:
+The lecture covered:
 
-- Collaborative filtering
-- Content-based recommendation
-- User and content representations
-- Ranking candidate content
-- Balancing relevance, novelty and diversity
-- How short-form platforms surface content at scale
+- What Meta wants from Reels commercially: retention, ads and user data
+- Why recommendation is multi-stage when users view over 200 billion Reels a day
+- Lightweight candidate retrieval (two-tower models and user/reel graphs)
+- Heavier ranking with HSTU, which treats a scrolling session as an alternating
+  sequence of videos and actions
+
+Both tracks shared a live doomscrolling app with around 300 Instagram reels.
+Attendees scrolled through it, exported their session as JSON, got personalised
+recommendations from their model, and then watched those picks back in the app.
+I ran 2 tracks so the session worked for any background:
+
+- **Beginner (no coding required):** Attendees pasted their scroll log into a
+  structured prompt that turned an LLM into an HSTU-style recommendation engine,
+  complete with sequential reasoning rules and a weighted scoring formula
+  (`1.5·P(Watch) + 2.0·P(Like) − 3.0·P(Skip)`). They then learned how engineers
+  evaluate recommenders with ranking metrics such as Hit@10.
+- **Advanced (PyTorch):** Attendees built and trained their own HSTU, covering:
+  - Item and event encoders combining content embeddings with watch and action features
+  - HSTU blocks with pointwise SiLU attention instead of softmax, relative
+    position and time biases, gating, and causal and padding masks
+  - A chronological 80/10/10 train/validation/test split to avoid learning from the future
+  - Next-item training with cross-entropy loss over a 31,496-video catalogue
+  - Evaluating with Hit@10, reaching 0.34% on the test set, about 10.7x better than random
+  - Transferring the trained weights to a separate catalogue of 298 Instagram
+    reels and recommending from their own scrolling history
+
+Attendees on both tracks finished with a working recommender they could test on
+their own behaviour.
 
 ---
 
