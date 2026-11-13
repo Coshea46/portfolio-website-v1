@@ -504,3 +504,13 @@ section { padding: 90px 0; }
   height: auto;
   margin: 0 auto;
 }
+
+/* Keep architecture labels legible; scroll the diagram on narrow screens. */
+.prose pre.touchline-architecture svg {
+  min-width: 660px;
+}
+
+.diagram-hint { display: none; }
+@media (max-width: 740px) {
+  .diagram-hint { display: block; color: var(--text-faint); font-size: 0.85rem; }
+}

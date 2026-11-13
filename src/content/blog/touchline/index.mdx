@@ -1,0 +1,116 @@
+---
+title: "Touchline"
+description: "A hackathon project exploring AI-directed football viewing across seven concurrent match streams."
+icon: "/images/touchline.svg"
+tech:
+  - "Python"
+  - "PyTorch"
+  - "YOLO26s"
+  - "React"
+  - "WebSockets"
+  - "Modal"
+  - "Amazon S3"
+  - "DynamoDB"
+---
+
+- [Live Application](https://touchline-football-director.vercel.app/)
+- [Repository](https://github.com/Coshea46/touchline-automated-football-director)
+
+Touchline was built for a hackathon to explore AI-directed football viewing: a Director chooses between matches while the viewer follows one main screen. It combines computer vision, a custom-trained temporal model and distributed processing.
+
+## The Problem
+
+Several football matches are often on simultaneously, particularly on Champions League nights. Following the best moments live means either constantly switching streams yourself or accepting that you will see some moments only in replay. Touchline explores whether predictions can help decide where to watch before an interesting passage of play develops.
+
+The **Director controls which match is displayed on the main screen and decides when to switch**. The intended use case is live viewing, but the public demo replays seven prerecorded Premier League matches. It does not receive live Champions League broadcasts or guarantee that every important moment appears on screen.
+
+## Overview
+
+<figure className="video-demo">
+  <video controls preload="metadata" playsInline>
+    <source src="/media/touchline/touchline-tutorial.mp4" type="video/mp4" />
+    Your browser does not support embedded HTML video.
+    <a href="/media/touchline/touchline-tutorial.mp4">Download the overview video.</a>
+  </video>
+  <figcaption>
+    Silent animated overview, approximately 101 seconds long. This explains the
+    concept and interface; it is not a screen recording of a real live broadcast.
+  </figcaption>
+</figure>
+
+## How It Works
+
+All seven videos are monitored concurrently, with separate analysis state for each match. Four concurrent Modal GPU workers share the seven streams in a **2 + 2 + 2 + 1** partition. Each physical GPU therefore handles one or two matches. Video decoding and visual feature extraction are expensive, so distributing that work keeps one worker from having to process every match. Each worker handles its assigned streams and returns compact scores and health updates to the backend.
+
+### Model and Training
+
+YOLO26s supplies visual observations, which feed temporal features describing players, the ball, camera movement and audio. Five-second observations sampled at 15 FPS become 75 × 215 feature windows, transformed into 68 model input channels. This representation lets a custom temporal GRU interpret developing movement across several seconds, rather than judging isolated frames.
+
+The GRU has 4,179 parameters and was trained on 11 matches, with validation on four separate matches. Its small size makes classification comparatively inexpensive; it runs on CPU within each GPU worker, alongside feature extraction. The deployed `shots3_10` output head targets evidence of shots or goals in the 3–10 seconds ahead window. Updated scores are produced every two seconds.
+
+These are experimental relative rankings, not calibrated goal probabilities. A separate Director scoring and switching policy compares matches and selects the main-screen match. Relaxed, Balanced and All Action change switching sensitivity and the preference for staying with the current match, using the same model. All Action is the hosted default.
+
+### Training Data and Labelling
+
+Footage comes from [SoccerNet](https://www.soccer-net.org/), with supervision from its official [SoccerNet-v2 timestamped event annotations](https://www.soccer-net.org/tasks/action-spotting). I built a pipeline to turn these annotations into training examples, rather than hand-labelling every clip. Kaggle supported processing and training; SoccerNet supplied the dataset. The model used 11 training matches and four separate validation matches. Downloaded test footage was excluded from training; the test set remains unevaluated.
+
+The original configuration covered shots on target, shots off target, goals, corners, penalties and direct free kicks. The deployed `shots3_10` head selects only shots on target, shots off target and goals. “Interesting” is therefore an event-based target.
+
+At endpoint *t*, input contains only the preceding five seconds of video/audio. The binary target is positive when a matching annotated event group occurs between *t + 3* and *t + 10* seconds, inclusive; otherwise it is negative. After observing **11:55–12:00**, a qualifying shot or goal annotated between **12:03 and 12:10** makes the target positive. Related shot/goal annotations retain their original grouping, using the earliest qualifying timestamp.
+
+Training uses a dense two-second observation grid, retaining windows the original labelling rules ignored. Training-example spacing and the deployed two-second prediction cadence are separate choices. Future annotations supply targets, never model inputs; inference respects permitted playback positions.
+
+Shots and goals are practical proxies for interest: exciting passages without those outcomes may be missed, annotation timing is imperfect, and scores are not calibrated goal probabilities.
+
+### System Architecture
+
+<p className="diagram-hint">On small screens, scroll the diagram horizontally to explore the full architecture.</p>
+
+<pre className="mermaid touchline-architecture" tabIndex={0} role="region" aria-label="Touchline system architecture, horizontally scrollable">{`flowchart TB
+    WEB["React frontend<br/>Vercel"]
+    API["Python ASGI control plane<br/>Modal CPU · Director policy"]
+    GPU["4 concurrent Modal GPU workers<br/>7 streams: 2 + 2 + 2 + 1 · separate match state<br/>Each: cached YOLO26s features → CPU GRU"]
+    DB[("DynamoDB<br/>Admission · rate limits · budgets")]
+    S3[("Private S3<br/>Match recordings")]
+
+    WEB -->|"Persistent WebSocket:<br/>playback reports / controls"| API
+    API -->|"Same WebSocket: Director state,<br/>switch recommendations, captions"| WEB
+    API -->|"Private WebSockets:<br/>playback permissions / control"| GPU
+    GPU -->|"Private WebSockets:<br/>compact scores / health"| API
+    API <-->|"Durable accounting"| DB
+    S3 -.->|"Direct video playback<br/>Temporary signed URLs"| WEB
+    S3 -.->|"Independent media reads"| GPU
+
+    classDef web fill:#eaf4ee,stroke:#176b4a,color:#17201c,stroke-width:2px
+    classDef compute fill:#eef3fb,stroke:#426fa6,color:#17201c,stroke-width:2px
+    classDef storage fill:#fff7e5,stroke:#b68112,color:#17201c,stroke-width:2px
+    class WEB web
+    class API,GPU compute
+    class S3,DB storage`}</pre>
+
+Two persistent WebSocket paths connect the system: browser ↔ CPU backend for playback reports, controls and switching recommendations; backend ↔ workers for playback permissions and compact scoring updates. Solid arrows carry control, scores or accounting; dotted arrows carry media. S3 delivers video directly to browsers and independently to workers. Raw video never travels through the backend WebSocket.
+
+A bounded 30-second benchmark using seven sources and four T4 workers recorded **1.859 seconds median observation-to-WebSocket latency**. This measures score delivery in that specific headless run, excluding browser decoding and caption delay. It is neither a cold-start time nor a production latency guarantee.
+
+## Engineering Decisions and Limitations
+
+**Reuse overlapping observations.** Each new sampled frame is analysed once. Cached observations are reused across overlapping five-second windows, avoiding repeated visual extraction while preserving context for the two-second scoring cadence.
+
+**Let playback govern inference.** The browser's actual playback position determines inference permissions. Workers cannot deliberately analyse beyond that permitted position. This matters for an honest predictive replay: access to prerecorded files must not become permission to inspect future footage before making a recommendation.
+
+**Separate visitor state and compute lifetimes.** Each visitor has an independent replay session. Modal CPU and GPU compute scale to zero when idle, while DynamoDB keeps admission, rate limiting and budget accounting durable across restarts. Cold starts remain a trade-off.
+
+### Replay Performance
+
+An application-policy replay evaluated All Action on four validation matches, assuming a **2.157-second prediction delay plus 0.25-second display delay**:
+
+| Measure | All Action replay |
+| --- | ---: |
+| Shots shown | 46 / 92 |
+| Qualifying events shown | 70 / 138 |
+| Goals shown | 8 / 12 |
+| Switches per minute | Approximately 2.45 |
+
+“Shown” means the event's match was selected at its annotated timestamp. This measures viewing coverage, not goal-prediction accuracy. Of the eight goals shown, five followed a switch within ten seconds; three were already being watched for longer. These are simulated replay results, not measured outcomes for visitors using the public website.
+
+The validation matches informed model selection, and the untouched test set has not been evaluated. The replay assumes healthy, synchronised playback and fixed delays; it excludes startup, stalls and variable network conditions. Switching policy remains a trade-off between lingering too long and interrupting viewing. Neither these results nor the bounded runtime benchmark establish sustained public-demo reliability or readiness for live broadcast feeds.

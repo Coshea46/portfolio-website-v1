@@ -28,7 +28,7 @@ const isExternal = (url: string) => url.startsWith('http');
             <div class="project-banner cover">
               <img src={p.banner ?? p.icon} alt={`${p.name} preview`} loading="lazy" />
 
-              <span class="project-badge">Featured work</span>
+              <span class="project-badge">{p.badge ?? 'Featured work'}</span>
               {p.live && <span class="project-live"><span class="dot-live"></span>Live</span>}
             </div>
 

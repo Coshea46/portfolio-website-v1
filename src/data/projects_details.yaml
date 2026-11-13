@@ -26,6 +26,33 @@ projects:
         url: "/blog/judo-clipper"
         type: "blog"
 
+  - name: "Touchline"
+    slug: "touchline"
+    tagline: "An AI football director that analyses seven matches simultaneously and automatically chooses which match appears on the main screen. Built for a hackathon; the demo uses prerecorded matches."
+    icon: "/images/touchline.svg"
+    banner: "/images/touchline-project-screenshot.png"
+    badge: "Hackathon project"
+    live: true
+    tech:
+      - "Python"
+      - "PyTorch"
+      - "YOLO26s"
+      - "React"
+      - "WebSockets"
+      - "Modal"
+      - "AWS S3 / DynamoDB"
+    links:
+      - label: "Visit website"
+        url: "https://touchline-football-director.vercel.app/"
+        type: "webapp"
+        primary: true
+      - label: "Repository"
+        url: "https://github.com/Coshea46/touchline-automated-football-director"
+        type: "github"
+      - label: "Write-up"
+        url: "/blog/touchline"
+        type: "blog"
+
   - name: "EdinburghAI Workshops"
     slug: "edinburgh-ai-workshops"
     tagline: "Self-authored resources for AI-focused workshops delivered to students at the University of Edinburgh's student-led AI Society."
