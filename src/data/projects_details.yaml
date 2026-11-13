@@ -32,7 +32,6 @@ projects:
     icon: "/images/touchline.svg"
     banner: "/images/touchline-project-screenshot.png"
     badge: "Hackathon project"
-    live: true
     tech:
       - "Python"
       - "PyTorch"
