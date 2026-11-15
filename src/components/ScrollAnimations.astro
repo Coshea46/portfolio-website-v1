@@ -1,0 +1,147 @@
+<!-- Homepage scroll reveals: remove this component from index.astro to restore static behaviour. -->
+<script>
+  const targets = Array.from(document.querySelectorAll<HTMLElement>(
+    '#main-content .section-heading, #main-content .work-card, #main-content .experience-row, #main-content .contact-grid h2',
+  ));
+  const revealed = new WeakSet<HTMLElement>();
+  const pending = new Set<HTMLElement>();
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let observer: IntersectionObserver | null = null;
+  let failed = false;
+
+  document.body.dataset.scrollExperiment = '';
+
+  function finishReveal(target: HTMLElement, immediate = false) {
+    const wasPending = pending.delete(target);
+    revealed.add(target);
+    observer?.unobserve(target);
+    if (wasPending && !immediate) target.dataset.scrollReveal = 'visible';
+    else delete target.dataset.scrollReveal;
+  }
+
+  function stopObserving() {
+    observer?.disconnect();
+    observer = null;
+    pending.clear();
+    targets.forEach((target) => delete target.dataset.scrollReveal);
+  }
+
+  function failOpen() {
+    failed = true;
+    stopObserving();
+    delete document.body.dataset.scrollExperiment;
+  }
+
+  function startObserving() {
+    stopObserving();
+    if (failed || motionPreference.matches || !('IntersectionObserver' in window)) return;
+
+    try {
+      observer = new IntersectionObserver((entries) => {
+        try {
+          for (const entry of entries) {
+            const target = entry.target as HTMLElement;
+            if (!entry.isIntersecting || !pending.has(target)) continue;
+            // Anchor jumps and keyboard navigation reveal immediately, without a reset.
+            finishReveal(target, target.getBoundingClientRect().top < 0 || target.matches(':focus-within'));
+          }
+        } catch {
+          failOpen();
+        }
+      }, { threshold: 0, rootMargin: '0px 0px -12px 0px' });
+
+      const belowViewport = targets.filter((target) => {
+        if (revealed.has(target)) return false;
+        if (target.getBoundingClientRect().top <= window.innerHeight) {
+          revealed.add(target);
+          return false;
+        }
+        return true;
+      });
+
+      // Register everything successfully before hiding anything. Only content
+      // below the screen gets a starting state, before it can enter the viewport.
+      belowViewport.forEach((target) => observer!.observe(target));
+      for (const target of belowViewport) {
+        pending.add(target);
+        target.dataset.scrollReveal = 'pending';
+      }
+    } catch {
+      failOpen();
+    }
+  }
+
+  function handleFocus(event: FocusEvent) {
+    if (!(event.target instanceof Element)) return;
+    for (const target of targets) {
+      if (target.contains(event.target)) finishReveal(target, true);
+    }
+  }
+
+  // Base HTML/CSS stays visible without JS. Runtime failures release every
+  // prepared element; reduced motion and focus also force visibility in CSS.
+  motionPreference.addEventListener('change', startObserving);
+  document.addEventListener('focusin', handleFocus);
+  window.addEventListener('error', failOpen);
+  window.addEventListener('unhandledrejection', failOpen);
+  startObserving();
+
+  if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
+      stopObserving();
+      motionPreference.removeEventListener('change', startObserving);
+      document.removeEventListener('focusin', handleFocus);
+      window.removeEventListener('error', failOpen);
+      window.removeEventListener('unhandledrejection', failOpen);
+      delete document.body.dataset.scrollExperiment;
+    });
+  }
+</script>
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    body[data-scroll-experiment] [data-scroll-reveal='pending'] {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: none;
+    }
+
+    body[data-scroll-experiment] [data-scroll-reveal='visible'] {
+      opacity: 1;
+      transform: none;
+      transition: opacity 350ms ease-out, transform 350ms ease-out, border-color 180ms ease-out;
+    }
+
+    body[data-scroll-experiment] [data-scroll-reveal]:focus-within {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    [data-scroll-experiment] .work-card {
+      transition: border-color 180ms ease-out;
+    }
+
+    [data-scroll-experiment] a {
+      transition: color 160ms ease-out, border-color 160ms ease-out, background-color 160ms ease-out;
+    }
+  }
+
+  [data-scroll-experiment] .work-card:focus-within {
+    border-color: var(--border-hover);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-scroll-experiment] .work-card:hover {
+      border-color: var(--border-hover);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body[data-scroll-experiment] [data-scroll-reveal] { opacity: 1; transform: none; transition: none; }
+  }
+
+  @media print {
+    body[data-scroll-experiment] [data-scroll-reveal] { opacity: 1; transform: none; transition: none; }
+  }
+</style>
