@@ -1,16 +1,17 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Footer from '../components/Footer.astro';
+import DiagramViewer from '../components/DiagramViewer.astro';
 
 const { frontmatter } = Astro.props;
 const dateStr = frontmatter.date
   ? new Date(frontmatter.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long' })
   : null;
 ---
-<BaseLayout title={`${frontmatter.title} · Conor O'Shea`} description={frontmatter.description}>
-  <article class="article">
-    <div class="wrap narrow">
-      <a class="back" href="/#projects">&larr; Back to projects</a>
+<BaseLayout title={`${frontmatter.title} · Conor O'Shea`} description={frontmatter.description} image={frontmatter.icon === '/images/touchline.svg' ? '/images/touchline-preview.webp' : frontmatter.icon} imageAlt={frontmatter.title} type="article">
+  <article class="article" id="main-content" tabindex="-1">
+    <div class="wrap article-wrap">
+      <a class="btn btn-ghost back" href="/#projects">Back to projects</a>
 
       <div class="article-head">
         {frontmatter.icon && <img class="article-icon" src={frontmatter.icon} alt="" />}
@@ -34,30 +35,34 @@ const dateStr = frontmatter.date
     </div>
   </article>
   <Footer />
+  <DiagramViewer />
   <script>
-    import mermaid from 'mermaid';
-
-    mermaid.initialize({
+    async function renderDiagrams() {
+      if (!document.querySelector('.mermaid')) return;
+      const { default: mermaid } = await import('mermaid');
+      await document.fonts.ready;
+      mermaid.initialize({
       startOnLoad: false,
       theme: 'dark',
       securityLevel: 'strict',
       themeVariables: {
-        background: '#111420',
-        primaryColor: '#111420',
-        primaryTextColor: '#e6e9f0',
-        primaryBorderColor: '#4fd1c5',
-        lineColor: '#4fd1c5',
-        secondaryColor: '#0e1017',
-        tertiaryColor: '#0e1017',
+        background: '#191a16',
+        primaryColor: '#191a16',
+        primaryTextColor: '#f2f1eb',
+        primaryBorderColor: '#d98639',
+        lineColor: '#d98639',
+        secondaryColor: '#11120f',
+        tertiaryColor: '#11120f',
       },
     });
 
-    mermaid
-      .run({
+      await mermaid.run({
         querySelector: '.mermaid',
-      })
-      .catch((error) => {
-        console.error('Mermaid diagram failed to render:', error);
       });
+      document.dispatchEvent(new Event('diagrams:rendered'));
+    }
+    renderDiagrams().catch((error) => {
+      console.error('Mermaid diagram failed to render:', error);
+    });
   </script>
 </BaseLayout>

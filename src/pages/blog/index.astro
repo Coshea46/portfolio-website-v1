@@ -7,12 +7,12 @@ const posts = (await getCollection('blog'))
   .filter((post) => !post.id.includes('/'))
   .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
 ---
-<BaseLayout title="Writing · Conor O'Shea">
-  <section class="article">
+<BaseLayout title="Writing · Conor O'Shea" description="Project write-ups on machine learning, video analysis and AI workshops, including Judo Clipper and Touchline.">
+  <section class="article" id="main-content" tabindex="-1">
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-tag">/ writing</span>
-        <h2>Project write-ups</h2>
+        <h1 class="writing-title">Project write-ups</h1>
       </div>
       <div class="projects">
         {posts.map((post) => (
@@ -21,7 +21,7 @@ const posts = (await getCollection('blog'))
               {post.data.icon && <img src={post.data.icon} alt="" loading="lazy" />}
             </div>
             <div class="project-body">
-              <h3>{post.data.title}</h3>
+              <h2>{post.data.title}</h2>
               {post.data.description && <p class="tagline">{post.data.description}</p>}
               <div class="project-links">
                 <a class="plink primary" href={`/blog/${post.id}`}>Read write-up</a>

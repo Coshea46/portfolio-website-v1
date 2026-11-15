@@ -1,87 +1,53 @@
 ---
 import projectsData from '../data/projects_details.yaml';
-const { projects } = projectsData;
-
-const linkIcons: Record<string, string> = {
-  github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.3 1.2-3.2 0-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 5 18 5.3 18 5.3c.6 1.7.1 2.9.1 3.2.8.9 1.2 2 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>',
-  blog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
-  commits: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22.95" y2="12"/></svg>',
-  webapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
-};
-const iconFor = (type: string) => linkIcons[type] ?? linkIcons.webapp;
-const isExternal = (url: string) => url.startsWith('http');
+const judo = projectsData.projects.find((p: any) => p.slug === 'judo-clipper');
+const touchline = projectsData.projects.find((p: any) => p.slug === 'touchline');
+const labels: Record<string, string> = { 'Visit website': 'Live app', 'Research repo': 'Model research' };
 ---
-<section id="projects">
+<section id="projects" class="work-section">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="sec-tag">03 / projects</span>
-      <h2>Selected work</h2>
-      <p>End-to-end builds, from model research to deployed applications and teaching resources.</p>
+    <div class="section-heading"><span class="section-number">01</span><h2>Selected work</h2><span class="section-aside">Models, systems &amp; products</span></div>
+    <div class="work-grid">
+      <article class="work-card flagship" id="judo-clipper">
+        <div class="project-media"><div class="flagship-photo"><img src="/images/judo_clipper_project_icon.png" alt="Two judo competitors with tracked pose skeletons" width="631" height="346" loading="lazy" /></div><span class="media-caption">01 / Two-player pose tracking</span></div>
+        <div class="work-body">
+          <div class="work-intro">
+          <p class="eyebrow">Applied machine learning / independent project</p>
+          <h3>Judo Clipper</h3>
+          <p>Turns full judo matches into short clips of likely throw attempts, helping athletes and coaches find moments to review without searching through the whole recording.</p>
+          <p>I trained the system using footage I labelled by hand and built the service that processes uploaded videos. It follows both competitors’ movements rather than relying on clothing colour, so it can handle opponents wearing matching kit.</p>
+          </div>
+          <dl class="metrics"><div><dt>2,163</dt><dd>Hand-labelled<br />7-second clips</dd></div><div><dt>0.761</dt><dd>Attempt F1<br />Held-out test set</dd></div><div><dt>30 min</dt><dd>Maximum<br />video length</dd></div></dl>
+          <p class="stack"><strong>Stack /</strong> Python, PyTorch, YOLO11x-pose, ByteTrack, FastAPI, Modal, AWS S3, FFmpeg, pytest (554 tests)</p>
+          <p class="transparency">The ML pipeline and backend are my own work. The frontend was built with substantial generative AI assistance.</p>
+          <div class="card-actions">{judo.links.map((link: any) => <a class:list={['small-btn', { primary: link.primary }]} href={link.url} target={link.url.startsWith('http') ? '_blank' : undefined} rel={link.url.startsWith('http') ? 'noopener' : undefined}>{labels[link.label] ?? link.label}</a>)}</div>
+        </div>
+      </article>
+      <div class="supporting-projects">
+      <article class="work-card touchline-card">
+        <div class="project-media"><img src="/images/touchline-preview.webp" alt="Touchline showing Chelsea vs Swansea City with the automatic director and commentary captions" width="1200" height="597" loading="lazy" /><span class="media-caption">02 / Automated football director</span></div>
+        <div class="work-body">
+          <p class="eyebrow">HackTheBurgh / hackathon prototype</p><h3>Touchline</h3>
+          <p>Explores automatically switching between simultaneous football broadcasts to show the most interesting match. Ranks seven streams using pose-based features, a temporal model and a heuristic switching policy. The demo runs on prerecorded matches.</p>
+          <dl class="metrics touchline-metrics">
+            <div><dt>7</dt><dd>Concurrent streams</dd></div>
+            <div class="match-selection"><dt>Automated match selection</dt><dd>Pose estimation · Temporal modelling · Heuristic switching</dd></div>
+          </dl>
+          <p class="stack"><strong>Stack /</strong> {touchline.tech.join(', ')}</p>
+          <div class="card-actions">{touchline.links.map((link: any) => <a class:list={['small-btn', { primary: link.primary }]} href={link.url} target={link.url.startsWith('http') ? '_blank' : undefined} rel={link.url.startsWith('http') ? 'noopener' : undefined}>{link.primary ? 'Live demo' : link.label}</a>)}</div>
+        </div>
+      </article>
+      <article class="work-card hub-card">
+        <div class="project-media"><img src="/images/edinburghai-hub-preview.webp" alt="EdinburghAI Hub homepage with workshop resources, upcoming events and a society workshop photograph" width="1200" height="598" loading="lazy" /><span class="media-caption">03 / EdinburghAI member platform</span></div>
+        <div class="work-body">
+          <p class="eyebrow">03 / Live member platform</p><h3>EdinburghAI Hub</h3>
+          <p>A live platform for EdinburghAI with an early user base, helping students discover events, connect with other members and participate in the society. Supabase powers member accounts and authentication. I defined the features and requirements, built and launched it using AI-assisted development, and iterated with committee feedback.</p>
+          <p class="product-note">Supabase · Member accounts &amp; authentication · AI-assisted development</p>
+          <div class="card-actions"><a class="small-btn primary" href="https://edinburghai-hub.osheaconboy.chatgpt.site/" target="_blank" rel="noopener">Live site</a></div>
+        </div>
+      </article>
+      </div>
     </div>
-
-    <div class="projects">
-      {projects.map((p: any) => {
-        const primary = p.links.find((l: any) => l.primary) ?? p.links[0];
-        const rest = p.links.filter((l: any) => l !== primary);
-        return (
-          <article class="project reveal">
-            <div class="project-banner cover">
-              <img src={p.banner ?? p.icon} alt={`${p.name} preview`} loading="lazy" />
-
-              <span class="project-badge">{p.badge ?? 'Featured work'}</span>
-              {p.live && <span class="project-live"><span class="dot-live"></span>Live</span>}
-            </div>
-
-            <div class="project-body">
-              <h3>{p.name}</h3>
-
-              <div class="project-tech">
-                {p.tech.map((t: string) => <span class="chip">{t}</span>)}
-              </div>
-
-              <p class="tagline">{p.tagline}</p>
-
-              {p.concepts && (
-                <div class="concepts">
-                  <div class="g-lbl">concepts taught</div>
-                  <div class="chips">
-                    {p.concepts.map((c: string) => <span class="chip">{c}</span>)}
-                  </div>
-                </div>
-              )}
-
-              <div class="project-links">
-                {primary && (
-                  <a
-                    class="plink primary"
-                    href={primary.url}
-                    target={isExternal(primary.url) ? '_blank' : undefined}
-                    rel={isExternal(primary.url) ? 'noopener' : undefined}
-                  >
-                    <Fragment set:html={iconFor(primary.type)} />
-                    {primary.label}
-                  </a>
-                )}
-                {rest.length > 0 && (
-                  <div class="project-links-row">
-                    {rest.map((l: any) => (
-                      <a
-                        class="plink"
-                        href={l.url}
-                        target={isExternal(l.url) ? '_blank' : undefined}
-                        rel={isExternal(l.url) ? 'noopener' : undefined}
-                      >
-                        <Fragment set:html={iconFor(l.type)} />
-                        {l.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </article>
-        );
-      })}
-    </div>
+    <a class="text-link writing-link" href="/blog">All project write-ups</a>
   </div>
 </section>

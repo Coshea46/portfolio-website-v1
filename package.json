@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
+    "check": "astro check",
     "build": "astro build",
+    "audit:build": "node scripts/audit-build.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -12,5 +14,14 @@
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "astro": "^5.5.0",
     "mermaid": "^11.17.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "~5.9.3",
+    "sharp": "^0.34.5"
+  },
+  "overrides": {
+    "@modyfi/vite-plugin-yaml": { "js-yaml": "^4.3.2" },
+    "vite": "^6.4.6"
   }
 }

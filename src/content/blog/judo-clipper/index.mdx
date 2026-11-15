@@ -14,14 +14,37 @@ tech:
   - "FFmpeg"
 ---
 
+## Summary
+
+Judo is a combat sport where competitors try to throw their opponent to the ground. Reviewing match recordings helps athletes and coaches learn, but finding each attempted throw can mean searching through long stretches of footage.
+
+Judo Clipper helps with that first step: upload a match recording and it automatically identifies likely throw attempts, then saves those moments as short, playable clips. I trained the system using examples I labelled by hand and built the service that processes uploaded videos. It gives coaches and athletes a focused set of moments to review; judging technique and deciding what to improve still rests with them. The rest of this write-up explains how I built it, what worked and where its limits are.
+
 - [Live Application](https://www.judoclipper.com)
 - [Backend Repository](https://github.com/Coshea46/ai-judo-coach-system)
 - [Model Research Repository](https://github.com/Coshea46/ai-judo-coach-research-clean)
 - [Final V1 Model Report](/blog/judo-clipper/v1-classification-model-reports/final-v1-model)
 
-*The frontend was implemented with substantial generative AI assistance, so this write-up
-focuses on the model research, processing pipeline and backend engineering that I developed
-directly.*
+<p className="article-contribution-note"><em>Note: The frontend was implemented with substantial generative AI assistance, so this write-up focuses on the model research, processing pipeline and backend engineering that I developed directly.</em></p>
+
+## Demo
+
+The video below demonstrates the Judo Clipper workflow, from submitting match
+footage to receiving likely throw-attempt clips for review.
+
+<figure className="video-demo">
+  <video controls preload="metadata" playsInline>
+    <source
+      src="https://media.conoroshea.dev/judo-clipper/judoclipper_demo_with_captions.mp4"
+      type="video/mp4"
+    />
+    Your browser does not support embedded HTML video.
+  </video>
+
+  <figcaption>
+    Judo Clipper processing match footage and returning likely throw-attempt clips.
+  </figcaption>
+</figure>
 
 ---
 
@@ -85,28 +108,6 @@ This was a deliberate scope change based on what the data, the task difficulty a
 
 
 ---
-
-## Demo
-
-The video below demonstrates the Judo Clipper workflow, from submitting match
-footage to receiving likely throw-attempt clips for review.
-
-<figure className="video-demo">
-  <video controls preload="metadata" playsInline>
-    <source
-      src="https://media.conoroshea.dev/judo-clipper/judoclipper_demo_with_captions.mp4"
-      type="video/mp4"
-    />
-    Your browser does not support embedded HTML video.
-  </video>
-
-  <figcaption>
-    Judo Clipper processing match footage and returning likely throw-attempt clips.
-  </figcaption>
-</figure>
-
----
-
 
 ## How It Works
 

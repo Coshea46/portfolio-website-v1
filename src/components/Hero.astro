@@ -2,26 +2,55 @@
 import profile from '../data/profiles.yaml';
 ---
 <header class="hero" id="top">
-  <div class="wrap">
-    <span class="badge"><span class="pulse"></span>{profile.availability}</span>
-    <h1>
-      Building end-to-end<br />
-      AI systems for<br />
-      <span class="grad">real-world problems.</span>
-    </h1>
-
-    <p class="role">// {profile.role}</p>
-    <div class="lead">
-        {profile.lead.map((para: string) => <p>{para}</p>)}
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Edinburgh, UK</p>
+      <h1>Conor<br />O’Shea</h1>
+      <div class="hero-intro">
+        <p>3rd-year AI and Computer Science student at the University of Edinburgh.</p>
+        <p>I build machine learning systems, from hand-labelled data and model development to deployed applications.</p>
+        <p>When I'm not at my desk you’ll find me at judo, in the gym or drinking coffee!</p>
+      </div>
+      <p class="availability">Seeking summer 2027 internships in the UK · Eligible to work in the UK</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#judo-clipper">See Judo Clipper</a>
+        <a class="btn btn-ghost" href={profile.resume} target="_blank" rel="noopener">Read my CV</a>
+        <a class="btn btn-ghost" href={profile.github} target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
-    <div class="hero-actions">
-      <a href="#projects" class="btn btn-primary">View my work
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <a href="#contact" class="btn btn-ghost">Get in touch</a>
-    </div>
-    <div class="hero-summary">
-      {profile.hero_summary}
-    </div>
-
+    <figure class="demo-panel">
+      <div class="panel-bar"><span><span class="status-dot"></span>Judo Clipper / pose tracking</span><span>01</span></div>
+      <video id="judo-demo" muted loop playsinline preload="metadata" poster="/media/judo-clipper/poster.webp" width="640" height="360" tabindex="0" role="button" aria-label="Play Judo Clipper pose tracking demo" aria-pressed="false" title="Click or press Enter or Space to pause or resume">
+        <source src="/media/judo-clipper/throw-detection.mp4" type="video/mp4" />
+        <a href="/media/judo-clipper/throw-detection.mp4">Watch the pose tracking demo</a>
+      </video>
+      <figcaption><span>From match footage to structured movement.</span><a href="#judo-clipper">Explore the pipeline</a></figcaption>
+    </figure>
+  </div>
 </header>
+<script>
+  const demo = document.querySelector<HTMLVideoElement>('#judo-demo');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const toggleDemo = () => {
+    if (!demo) return;
+    if (demo.paused) demo.play().catch(() => {});
+    else demo.pause();
+  };
+  const updateDemoLabel = () => {
+    demo?.setAttribute('aria-label', `${demo.paused ? 'Play' : 'Pause'} Judo Clipper pose tracking demo`);
+    demo?.setAttribute('aria-pressed', String(!demo.paused));
+  };
+  demo?.addEventListener('click', toggleDemo);
+  demo?.addEventListener('play', updateDemoLabel);
+  demo?.addEventListener('pause', updateDemoLabel);
+  demo?.addEventListener('keydown', (event) => {
+    if (event.code === 'Space' || event.code === 'Enter') {
+      event.preventDefault();
+      toggleDemo();
+    }
+  });
+  motionPreference.addEventListener('change', () => { if (motionPreference.matches) demo?.pause(); });
+  if (demo && !motionPreference.matches) {
+    demo.play().catch(() => { /* Keep the poster visible if autoplay is blocked. */ });
+  }
+</script>

@@ -6,12 +6,16 @@ import Research from '../components/Research.astro';
 import Projects from '../components/Projects.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
+import DiagramViewer from '../components/DiagramViewer.astro';
 ---
 <BaseLayout>
-  <Hero />
-  <About />
-  <Research />
-  <Projects />
-  <Contact />
+  <main id="main-content" tabindex="-1">
+    <Hero />
+    <Projects />
+    <Research />
+    <About />
+    <Contact />
+  </main>
   <Footer />
+  <DiagramViewer />
 </BaseLayout>

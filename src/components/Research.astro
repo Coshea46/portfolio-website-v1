@@ -1,54 +1,46 @@
 ---
-import profile from '../data/profiles.yaml';
-
-const { research } = profile;
+import projectsData from '../data/projects_details.yaml';
+const workshops = projectsData.projects.find((p: any) => p.slug === 'edinburgh-ai-workshops');
 ---
-
-<section id="research">
+<section id="experience" class="experience-section">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="sec-tag">02 / research experience</span>
-      <h2>AI &amp; Cybersecurity Research Internship</h2>
-      <p>
-        Recently completed a research internship at the University of Edinburgh’s
-        School of Informatics.
-      </p>
+    <div class="section-heading"><span class="section-number">02</span><h2>Experience</h2><span class="section-aside">Research &amp; community</span></div>
+    <div class="experience-row" id="research">
+      <div class="role-meta"><h3>AI Research Intern</h3><p class="organisation">University of Edinburgh<br />School of Informatics</p><p class="role-date">June - August 2026</p></div>
+      <div class="role-detail">
+        <div class="role-copy">
+        <ul>
+          <li>Designed and built a MIME-aware email anonymisation pipeline combining deterministic parsers, Presidio and transformer-based spaCy named entity recognition.</li>
+          <li>Evaluated it against 2,339 manually labelled spans across 40 emails. Strict entity-level F1: 0.89 for email addresses, 0.83 for person names, 0.97 for URLs and 0.99 for IP addresses.</li>
+          <li>Curated 160 obfuscated emails for downstream LLM research and built a Streamlit annotation tool that made labelling approximately 4× faster.</li>
+          <li>Contributed to a paper submitted to ACM AISec 2026.</li>
+        </ul>
+        <p class="private-note">Research source code is currently private.</p>
+        </div>
+        <figure class="experience-media research-media"><img src="/images/anonymisation-preview.webp" data-expand-src="/images/email_anonymization_project_icon.png" alt="Email anonymisation pipeline before and after comparison" width="960" height="540" loading="lazy" /><figcaption>Email anonymisation / before &amp; after</figcaption></figure>
+      </div>
     </div>
-
-    <div class="paper-card reveal">
-      <span class="paper-label">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-        </svg>
-
-        {research.label}
-      </span>
-
-      <h3>{research.title}</h3>
-
-      <p>{research.summary}</p>
-
-      <ul class="paper-contribs">
-        {research.contributions.map((contribution: string) => (
-          <li>{contribution}</li>
-        ))}
-      </ul>
-
-      <p class="paper-note">{research.note}</p>
-
-      <div class="paper-meta">
-        {research.meta.map((item: { label: string; value: string }) => (
-          <span>
-            <b>{item.label}:</b>&nbsp;{item.value}
-          </span>
-        ))}
+    <div class="experience-row">
+      <div class="role-meta"><h3>Workshop Lead</h3><p class="organisation">EdinburghAI Society</p><p class="role-date">September 2025 - present</p></div>
+      <div class="role-detail">
+        <div class="role-copy">
+        <ul>
+          <li>Designed and led hands-on workshops on YOLO, recurrent neural networks and computer vision, helping grow attendance across sessions.</li>
+          <li>Taught practical AI concepts through coding-focused workshops and notebooks.</li>
+          <li>Authored teaching materials, including early temporal classifier work that informed Judo Clipper.</li>
+        </ul>
+        <div class="card-actions">{workshops.links.map((link: any) => <a class="small-btn" href={link.url} target={link.url.startsWith('http') ? '_blank' : undefined} rel={link.url.startsWith('http') ? 'noopener' : undefined}>{link.label}</a>)}</div>
+        </div>
+        <figure class="experience-media workshop-media"><img src="/images/workshop-preview.webp" data-expand-src="/images/edinburgh_ai_project_icon.jpeg" alt="Conor presenting a computer vision workshop to EdinburghAI Society members" width="960" height="720" loading="lazy" /><figcaption>EdinburghAI / learning by building</figcaption></figure>
+      </div>
+    </div>
+    <div class="experience-row">
+      <div class="role-meta"><h3>Campus Lead</h3><p class="organisation">OpenAI Student Collective</p><p class="role-date">October 2026 - present</p></div>
+      <div class="role-detail">
+        <div class="role-copy">
+        <ul><li>Selected as one of two Campus Leads at the University of Edinburgh.</li><li>Organising and delivering ChatGPT and Codex workshops, studio hours and hands-on project sessions, with over 150 attendees at our first workshop.</li><li>Helping students explore and apply AI tools to their own technical projects.</li></ul>
+        </div>
+        <figure class="experience-media campus-media"><img src="/images/campus-lead-workshop.webp" data-expand-src="/images/campus-lead-workshop.png" alt="Students using laptops during an OpenAI Student Collective workshop in a lecture theatre" width="800" height="1066" loading="lazy" /><figcaption>OpenAI Student Collective / campus workshop</figcaption></figure>
       </div>
     </div>
   </div>

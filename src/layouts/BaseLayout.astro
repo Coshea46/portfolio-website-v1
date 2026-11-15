@@ -1,11 +1,18 @@
 ---
+import '../styles/homepage.css';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 
 const {
-  title = "Conor O'Shea · AI & Cybersecurity",
-  description = "Conor O'Shea — 3rd year AI & CS student at the University of Edinburgh. AI and Cybersecurity Researcher, aspiring ML / Applied AI Engineer.",
+  title = "Conor O'Shea · Applied AI & Software Engineering",
+  description = "Third-year AI and Computer Science student at the University of Edinburgh. Building machine learning systems from hand-labelled data to deployed applications. Seeking summer 2027 internships.",
+  image = '/images/photo_of_me.jpeg',
+  imageAlt = "Conor O'Shea at a judo competition",
+  type = 'website',
 } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+canonicalURL.pathname = canonicalURL.pathname.replace(/\/+$/, '') || '/';
+const imageURL = new URL(image, Astro.site);
 ---
 <!doctype html>
 <html lang="en">
@@ -14,40 +21,57 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Conor O'Shea" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" href="/favicon-judo-16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon-judo-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-judo-48.png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/favicon-judo-180.png" sizes="180x180" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <Nav />
     <slot />
 
     <script>
-      const nav = document.getElementById('nav');
-      if (nav) window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
-
       const menuBtn = document.getElementById('menuBtn');
       const navLinks = document.getElementById('navLinks');
       if (menuBtn && navLinks) {
-        menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+        const closeMenu = () => {
+          navLinks.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        };
+        menuBtn.addEventListener('click', () => {
+          const open = navLinks.classList.toggle('open');
+          menuBtn.setAttribute('aria-expanded', String(open));
+        });
         navLinks.querySelectorAll('a').forEach((a) =>
-          a.addEventListener('click', () => navLinks.classList.remove('open'))
+          a.addEventListener('click', closeMenu)
         );
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && navLinks.classList.contains('open')) {
+            closeMenu();
+            menuBtn.focus();
+          }
+        });
+        window.matchMedia('(min-width: 1001px)').addEventListener('change', closeMenu);
       }
 
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add('in');
-              io.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
     </script>
   </body>
 </html>
